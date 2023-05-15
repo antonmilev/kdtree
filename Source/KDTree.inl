@@ -42,12 +42,10 @@ typename KDTree<T>::KDNode*	KDTree<T>::KDNode::insert(const T* p)
 	if(p[parent->axis] > parent->x[parent->axis])
 	{
 		parent->right = newNode ;
-		newNode->orientation = 1 ;
 	}
 	else
 	{
 		parent->left = newNode ;
-		newNode->orientation = 0 ;
 	}
 
 	return newNode ;
