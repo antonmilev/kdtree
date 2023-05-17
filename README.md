@@ -134,7 +134,7 @@ The figure below shows the comparison of the NN search with k-d tree and the bru
 </p>
 
 These results shows that as can be expected the <b>Brute NN</b> search performance increases linearly with the data dimension O(d), while the <b>k-d</b> NN search performanceis is deteriorating exponentially and after d=10 it is closing to the results obtained with <b>Brute NN</b>. This is another effect of the 
-[<b>Curse of dimensionality</b>,](https://en.wikipedia.org/wiki/Curse_of_dimensionality), valid for many algorithms working with for <b>high dimensional</b> data.
+[<b>Curse of dimensionality</b>,](https://en.wikipedia.org/wiki/Curse_of_dimensionality), valid for many algorithms working with <b>high dimensional</b> data.
 
 
 
