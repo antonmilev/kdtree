@@ -1,8 +1,7 @@
 #ifndef __KDTREE_H__
 #define __KDTREE_H__
 
-#define SD 7					 //current space dimension
-#define KD_MAX_POINTS 2000000    //max KD tree points number  
+#include <vector>
 
 template <typename T> 
 T distance2(const T* x1, const T* x2, int dim)
@@ -31,52 +30,54 @@ class KDTree
 public:
     class KDNode
     {
-    //member functions
-    public:
-	    int axis ;
-	    T x[SD];
-	    unsigned int id ;
-	    bool checked ;
-	    bool orientation ;
+        friend class KDTree;
+        public:
+            KDNode(const T* x, int n, int axis);
+            const T* data() const { return x.data(); }
+            unsigned int getId() const { return id;  }
 
-        KDNode(const T* x, int axis0);
-
-        KDNode*	insert(const T* x) ;
-        KDNode*	find_parent(const T* x) ;
-
-	    KDNode* parent ;
-	    KDNode* left ;
-	    KDNode* right ;
+        protected:
+	        KDNode* parent ;
+	        KDNode* left ;
+	        KDNode* right ;	       
+            
+            int axis ;
+	        std::vector<T> x;
+	        unsigned int id ;
+	        bool checked ;
     };
 
 	KDNode*  root ;
-	KDTree();
+	KDTree(unsigned int K, unsigned int D);
     ~KDTree();
 	bool			add(const T* x);
+    KDNode*	        insert(const T* x) ;
     KDNode*			find_exact(const T* x) ;
 	KDNode*			find_nearest(const T* x);
 	KDNode*			find_nearest_brute(const T* x) ;
+    KDNode*         find_exact_brute(const T* x);
+    KDNode*	        find_parent(const T* x) ;
     void            clear();
-
+    size_t          size() const { return NodesList.size();  };
+    size_t          numChecked() const { return NodesChecked.size();  };
+    
 public:
-	int				checked_nodes ;
-	T				d_min ;    
-	int				nList ;
+	T				d_min ;   
+    unsigned int    n_dim;
 
 protected:	
-	void		    check_subtree(KDNode* node, const T* x);
-	void		    set_bounding_cube(KDNode* node, const T* x);
-	KDNode*	        search_parent(KDNode* parent, const T* x);
-	void			uncheck();
+	void		            check_subtree(KDNode* node, const T* x);
+	void		            set_bounding_cube(KDNode* node, const T* x);
+	KDNode*	                search_parent(KDNode* parent, const T* x);
+	void			        uncheck();
 
-	KDNode*		    nearest_neighbour ;
-	int				KD_id  ;
-	KDNode*		    List[KD_MAX_POINTS] ;
-
-	KDNode*		    CheckedNodes[KD_MAX_POINTS] ;
-	T				x_min[SD], x_max[SD]; 
-	bool			max_boundary[SD], min_boundary[SD];
-	int				n_boundary ;
+	KDNode*		            nearest_neighbour ;
+	int				        KD_id  ;
+	std::vector<KDNode*>	NodesList ;
+	std::vector<KDNode*>	NodesChecked ;
+	std::vector<T>			x_min, x_max; 
+	std::vector<bool>		max_boundary, min_boundary;
+	int				        n_boundary ;
 };
 
 #include "KDTree.inl"
